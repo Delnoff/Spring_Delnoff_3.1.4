@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Admin page</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body style="background-color: #f8f9fe">
+<nav class="navbar navbar-dark bg-dark">
+    <div>
+        <h5 style="color: darkgray">
+            <b style="color: white" th:text="${messages.username}">var</b>
+            with roles:
+            <b style="color: white" th:text="${messages.roles}">var</b>
+        </h5>
+    </div>
+    <span>
+        <h5><a th:href="@{/logout}" th:text="Logout" style="color: darkgrey">log</a></h5>
+    </span>
+</nav>
+
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto px-0">
+            <div style="width: 280px; height:1000px; background-color: white">
+                <br>
+                <div style="width: 280px;" class="list-group list-group-flush">
+                    <h4>
+                        <a th:href="@{/admin}" th:text="Admin"
+                           class="list-group-item list-group-item-action active"></a>
+                        <a th:href="@{/user}" th:text="User" class="list-group-item list-group-item-action"></a>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col ps-md-5 pt-2">
+            <div th:switch="${users}">
+                <h2 th:case="null">No users found!</h2>
+                <div th:case="*">
+                    <div class="row">
+                        <div class="page-header pt-3">
+                            <h1>Admin panel</h1>
+                        </div>
+                        <br>
+                        <nav>
+                            <div class="nav nav-tabs" id="myTab" role="tablist">
+                                <a class="nav-item nav-link active" href="#admin_panel" role="tab" data-toggle="tab">Users
+                                    table</a>
+                                <a class="nav-item nav-link " id="create-tab" data-toggle="tab" href="#home" role="tab">New
+                                    User</a>
+                            </div>
+                        </nav>
+
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="home" role="tabepanel" aria-labelledby="home-tab">
+                                <div class="card" style="width: auto; height: 70px; background-color: #e6e6e6">
+                                    <div class="card-body">
+                                        <h4>
+                                            Add new user
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="card" style="width: auto; height: auto">
+                                    <div class="mt-3">
+                                        <div class="card-body">
+                                            <div align="center">
+                                                <div class="form-group" style="width: 370px">
+                                                    <form th:action="@{/admin/create}" th:method="POST"
+                                                          th:object="${user}">
+
+                                                        <div class="row justify-content-center">
+                                                            <div class="form-group" style="width: 300px">
+                                                                <div class="text-center"><b>First Name</b></div>
+                                                                <input type="text" name="username" class="form-control"
+                                                                       placeholder="Enter Username"/>
+                                                            </div>
+                                                            <div style="color: red"
+                                                                 th:if="${#fields.hasErrors('username')}"
+                                                                 th:errors="*{username}">Username
+                                                                Error
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="row justify-content-center">
+                                                            <div class="form-group" style="width: 300px">
+                                                                <div class="text-center"><b>Age</b></div>
+                                                                <input type="number" name="age" class="form-control"
+                                                                       placeholder="Enter Age" min="1" max="99"/>
+                                                            </div>
+                                                            <div style="color: red" th:if="${#fields.hasErrors('age')}"
+                                                                 th:errors="*{age}">Age Error
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row justify-content-center">
+                                                            <div class="form-group" style="width: 300px">
+                                                                <div class="col-sm-6 container text-center"><b>Email</b>
+                                                                </div>
+                                                                <input type="email" name="email" class="form-control"
+                                                                       placeholder="Enter Email"/>
+                                                            </div>
+                                                            <div style="color: red"
+                                                                 th:if="${#fields.hasErrors('email')}"
+                                                                 th:errors="*{email}">Email Error
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row justify-content-center">
+                                                            <div class="form-group" style="width: 300px">
+                                                                <div class="text-center"><b>Password</b></div>
+                                                                <input type="text" name="password" class="form-control"
+                                                                       placeholder="Enter Password"/>
+                                                            </div>
+                                                            <div style="color: red"
+                                                                 th:if="${#fields.hasErrors('password')}"
+                                                                 th:errors="*{password}">Password Error
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col text-center"><b>Role</b></div>
+                                                        <div class="row justify-content-center">
+                                                            <div class="form-group" style="width: 300px">
+                                                                <select multiple class="form-control" size="2"
+                                                                        th:name="roles"
+                                                                        th:id="role">
+                                                                    <option th:each="rol:${roleList}"
+                                                                            th:value="${rol.role}"
+                                                                            th:text="${rol.getNoPrefix()}">
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                            <div style="color: red"
+                                                                 th:if="${#fields.hasErrors('roles')}"
+                                                                 th:errors="*{roles}">Role Error
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12 container text-center">
+                                                                <button type="submit" class="btn btn-success">
+                                                                    Create User
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade show active border" id="admin_panel" role="tabpanel"
+                                 aria-labelledby="home-tab">
+                                <div class="card" style="width: auto; height: 70px; background-color: #e6e6e6">
+                                    <div class="card-body">
+                                        <h4>
+                                            All users
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="card" style="width: auto; height: auto">
+                                    <div class="mt-3">
+                                        <div class="card-body">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>First Name</th>
+                                                    <th>Age</th>
+                                                    <th>Email</th>
+                                                    <th>Roles</th>
+                                                    <th>Edit</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="user : ${users}">
+                                                    <td th:text="${user.id}"></td>
+                                                    <td th:text="${user.email}"></td>
+                                                    <td th:text="${user.age}"></td>
+                                                    <td th:text="${user.username}"></td>
+                                                    <td>
+                                                        <th:block th:text="${user.getRoles()}"></th:block>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-info" th:href="${'#edit' + user.id}"
+                                                                data-toggle="modal">edit
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger" data-toggle="modal"
+                                                                th:href="${'#delete' + user.id}">delete
+                                                        </button>
+                                                    </td>
+                                                    <div class="modal fade" th:id="${'edit' + user.id}"
+                                                         tabindex="-1">
+                                                        <form th:action="@{/admin/update}" method="POST">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content justify-content-center">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title"
+                                                                            id="exampleModalLabel2">
+                                                                            Edit
+                                                                            user</h4>
+                                                                        <button class="close"
+                                                                                data-dismiss="modal">x
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div align="center">
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="col-sm-6 container text-center">
+                                                                                    <b>ID</b>
+                                                                                </div>
+                                                                                <input readonly type="number"
+                                                                                       class="form-control"
+                                                                                       th:name="id" id="id"
+                                                                                       th:value="${user.id}">
+                                                                            </div>
+
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <label for="username"
+                                                                                       class="col text-center"><b>First
+                                                                                    Name</b></label>
+                                                                                <input type="text"
+                                                                                       class="form-control"
+                                                                                       th:name="username"
+                                                                                       id="username"
+                                                                                       th:value="${user.email}">
+                                                                            </div>
+
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="col-sm-6 container text-center">
+                                                                                    <b>Age</b>
+                                                                                </div>
+                                                                                <input type="number" th:name="age"
+                                                                                       class="form-control"
+                                                                                       id="age"
+                                                                                       th:value="${user.age}">
+                                                                            </div>
+
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="col-sm-6 container text-center">
+                                                                                    <b>Email</b>
+                                                                                </div>
+                                                                                <input th:name="email"
+                                                                                       class="form-control"
+                                                                                       th:value="${user.username}"
+                                                                                       type="email"
+                                                                                       placeholder="Readonly input here…"
+                                                                                       readonly>
+                                                                            </div>
+
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="col-sm-6 container text-center">
+                                                                                    <b>Password</b>
+                                                                                </div>
+                                                                                <input type="password"
+                                                                                       th:name="password"
+                                                                                       th:value="${user.password}"
+                                                                                       class="form-control"/>
+                                                                            </div>
+
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="col text-center">
+                                                                                    <b>Role</b>
+                                                                                </div>
+                                                                                <select multiple
+                                                                                        class="form-control"
+                                                                                        size="2"
+                                                                                        th:name="roles"
+                                                                                        th:id="role">
+                                                                                    <option th:each="rol:${roleList}"
+                                                                                            th:value="${rol.role}"
+                                                                                            th:text="${rol.getNoPrefix()}"
+                                                                                            th:selected="${user.roles.contains(rol)}">
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+
+                                                                            <div class="modal-footer">
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">Close
+                                                                                </button>
+                                                                                <button type="submit"
+                                                                                        class="btn btn-primary">Edit
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <div class="modal fade" th:id="'delete'+${user.id}" tabindex="-1">
+                                                        <form th:action="@{admin/delete/{id}(id=${user.id})}"
+                                                              method="get">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content justify-content-center">
+                                                                    <div class="modal-header text-center">
+                                                                        <h4 class="modal-title text-center">Delete
+                                                                            user</h4>
+                                                                        <button class="close" data-dismiss="modal">x
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div align="center">
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="text-center"><b>ID</b>
+                                                                                </div>
+                                                                                <div type="text" name="id"
+                                                                                     th:text="${user.id}"
+                                                                                     th:field="*{user.id}"
+                                                                                     class="form-control"
+                                                                                     placeholder="Enter Username"
+                                                                                     readonly></div>
+                                                                            </div>
+
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="text-center">
+                                                                                    <b>Username</b>
+                                                                                </div>
+                                                                                <div type="text" name="firstName"
+                                                                                     th:text="${user.email}"
+                                                                                     th:field="*{user.username}"
+                                                                                     class="form-control"
+                                                                                     readonly></div>
+                                                                            </div>
+
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="text-center"><b>Age</b>
+                                                                                    <div type="number" name="age"
+                                                                                           th:name="age"
+                                                                                           class="form-control text-center"
+                                                                                           th:text="${user.age}"
+                                                                                           th:value="${user.age}"
+                                                                                           readonly/>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="col-sm-6 container text-center">
+                                                                                    <b>Email</b>
+                                                                                </div>
+                                                                                <div th:text="${user.username}"
+                                                                                     type="email"
+                                                                                     th:field="*{user.email}"
+                                                                                     name="email"
+                                                                                     class="form-control"
+                                                                                     readonly></div>
+                                                                            </div>
+
+                                                                            <div class="form-group"
+                                                                                 style="width: 270px">
+                                                                                <div class="col-sm-auto container text-center">
+                                                                                    <b>Roles</b></div>
+                                                                                <input class="col sm-auto text-center"
+                                                                                       name="roleList"
+                                                                                       th:each="rol : ${user.roles}"
+                                                                                       th:value="${rol.getNoPrefix()}"
+                                                                                       readonly/>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">Close
+                                                                                </button>
+                                                                                <button type="submit"
+                                                                                        class="btn btn-danger">
+                                                                                    Delete
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
