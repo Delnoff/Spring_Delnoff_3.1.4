@@ -23,9 +23,6 @@ public class RoleDaoImpl implements RoleDao {
         return true;
     }
 
-    public Role findByIdRole(Long id) {
-        return entityManager.find(Role.class, id);
-    }
 
     public Set<Role> listRoles() {
         List<Role> query = entityManager.createQuery("from Role", Role.class).getResultList();
@@ -38,11 +35,5 @@ public class RoleDaoImpl implements RoleDao {
                 .getResultList().stream().findAny().orElse(null);
     }
 
-    public Set<Role> listByName(List<String> name) {
-        List<Role> query = entityManager.createQuery("select u from Role u where u.role in (:id)", Role.class)
-                .setParameter("id", name)
-                .getResultList();
-        return new HashSet<>(query);
-    }
 
 }

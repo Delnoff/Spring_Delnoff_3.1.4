@@ -116,7 +116,7 @@
                                                         <div class="row justify-content-center">
                                                             <div class="form-group" style="width: 300px">
                                                                 <div class="text-center"><b>Password</b></div>
-                                                                <input type="text" name="password" class="form-control"
+                                                                <input type="password" name="password" class="form-control"
                                                                        placeholder="Enter Password"/>
                                                             </div>
                                                             <div style="color: red"
@@ -250,7 +250,7 @@
                                                                                 <input type="number" th:name="age"
                                                                                        class="form-control"
                                                                                        id="age"
-                                                                                       th:value="${user.age}">
+                                                                                       th:value="${user.age}" min="1" max="99">
                                                                             </div>
 
                                                                             <div class="form-group"
@@ -352,11 +352,11 @@
                                                                                  style="width: 270px">
                                                                                 <div class="text-center"><b>Age</b>
                                                                                     <div type="number" name="age"
-                                                                                           th:name="age"
-                                                                                           class="form-control text-center"
-                                                                                           th:text="${user.age}"
-                                                                                           th:value="${user.age}"
-                                                                                           readonly/>
+                                                                                         th:name="age"
+                                                                                         class="form-control text-center"
+                                                                                         th:text="${user.age}"
+                                                                                         th:value="${user.age}"
+                                                                                         readonly/>
                                                                                 </div>
                                                                             </div>
 

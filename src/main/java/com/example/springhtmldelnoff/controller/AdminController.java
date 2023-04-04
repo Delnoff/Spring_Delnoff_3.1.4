@@ -43,12 +43,12 @@ public class AdminController {
     }
 
     @PostMapping("/create")
-    public String createUser(@ModelAttribute @Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-        userValidator.validate(user,bindingResult);
+    public String createUser(@ModelAttribute @Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        userValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("user",user);
-            redirectAttributes.addFlashAttribute("errors",bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/admin";
         }
 

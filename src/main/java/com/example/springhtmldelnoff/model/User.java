@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private Long id;
 
     @NotEmpty(message = "The name fields should not be empty")
-    @Size(min = 2,max = 50, message = "The name must be between 2 and 50 characters")
+    @Size(min = 2, max = 50, message = "The name must be between 2 and 50 characters")
     @Column(name = "username")
     private String username;
 
@@ -37,8 +37,8 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Min(value = 1,message = "The age cannot be less than or equal to 0")
-    @Max(value = 99,message = "The age cannot be more than 100")
+    @Min(value = 1, message = "The age cannot be less than or equal to 0")
+    @Max(value = 99, message = "The age cannot be more than 100")
     @Column(name = "age")
     private int age;
 
@@ -47,13 +47,14 @@ public class User implements UserDetails {
     private String email;
 
     @NotEmpty(message = "Please select role")
-    @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(name="users_roles",
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String username, String password, int age, String email, Set<Role> roles) {
         this.username = username;

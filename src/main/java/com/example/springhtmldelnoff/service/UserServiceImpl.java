@@ -1,6 +1,5 @@
 package com.example.springhtmldelnoff.service;
 
-import com.example.springhtmldelnoff.dao.RoleDao;
 import com.example.springhtmldelnoff.dao.UserDao;
 import com.example.springhtmldelnoff.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,14 +18,16 @@ public class UserServiceImpl implements UserService {
         return new BCryptPasswordEncoder();
     }
 
-    public UserServiceImpl(RoleDao roleDao, UserDao userDao) {
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
     @Transactional
     public boolean add(User user) {
         User userPrimary = userDao.findByName(user.getUsername());
-        if(userPrimary != null) {return false;}
+        if (userPrimary != null) {
+            return false;
+        }
         user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
         userDao.add(user);
         return true;
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
         User userPrimary = findById(user.getId());
         System.out.println(userPrimary);
         System.out.println(user);
-        if(!userPrimary.getPassword().equals(user.getPassword())) {
+        if (!userPrimary.getPassword().equals(user.getPassword())) {
             user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
         }
         userDao.update(user);

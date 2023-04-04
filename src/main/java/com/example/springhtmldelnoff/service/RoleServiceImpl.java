@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -38,13 +37,4 @@ public class RoleServiceImpl implements RoleService {
         return roleDao.listRoles();
     }
 
-    @Transactional(readOnly = true)
-    public Role findByIdRole(Long id) {
-        return roleDao.findByIdRole(id);
-    }
-
-    @Transactional(readOnly = true)
-    public Set<Role> listByRole(List<String> name) {
-        return roleDao.listByName(name);
-    }
 }

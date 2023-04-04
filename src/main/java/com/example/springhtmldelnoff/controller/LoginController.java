@@ -44,11 +44,11 @@ public class LoginController {
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute @Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        userValidator.validate(user,bindingResult);
+        userValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("user",user);
-            redirectAttributes.addFlashAttribute("errors",bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "registration";
         }
         getUserRole(user);

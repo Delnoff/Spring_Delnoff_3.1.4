@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class UserDetailsImpl implements UserDetailsService {
 
-    final UserDao userDao;
+    private final UserDao userDao;
 
     public UserDetailsImpl(UserDao userDao) {
         this.userDao = userDao;
